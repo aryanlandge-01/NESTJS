@@ -10,30 +10,38 @@ import {
     Body,
     Req,
     ParseIntPipe,
-    DefaultValuePipe
+    DefaultValuePipe,
+    ValidationPipe,
 } from '@nestjs/common';
+import { CreateUserDto } from './dtos/create-user.dto';
+import { GetUsersParamDto } from './dtos/get-user-param.dto';
+import { PatchUserDto } from './dtos/patch-user-dto';
 
 
 
 @Controller('users')
 export class UsersController {
-    @Get('/:id/:name?')
+    @Get('/:id?')
     public getUsers(
-        @Param('id',ParseIntPipe) id: number | undefined,
+        @Param() getUsersParamDto: GetUsersParamDto,
         @Query('limit',new DefaultValuePipe(10),ParseIntPipe) limit: number | undefined,
         @Query('page' ,new DefaultValuePipe(1),ParseIntPipe) page: number | undefined){
-        console.log("Types of Id: ",typeof id);
-        console.log(
-            "Types of query",
-            limit,
-            page
-        );
+        console.log(getUsersParamDto);
         return "You sent a get request to users endpoint."
     }
 
     @Post()
-    public postUser(@Body() request: any){
-        console.log(request);
+    public createUsers(
+        @Body() createUserDto: CreateUserDto,
+    )
+    {
+        console.log(createUserDto instanceof CreateUserDto);
         return "User added successfully."
+    }
+
+    @Patch()
+    public patchUsers(@Body() patchUserDto: PatchUserDto){
+        console.log(patchUserDto);
+        return "You sent a patch request to users endpoint."
     }
 }
