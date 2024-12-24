@@ -1,5 +1,4 @@
 import { Injectable } from '@nestjs/common';
-import { title } from 'process';
 import { UsersService } from 'src/users/providers/users.service';
 
 @Injectable()
