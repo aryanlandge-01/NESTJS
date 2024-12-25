@@ -1,10 +1,14 @@
 import { 
     Controller, 
     Get,
-    Param
+    Param,
+    Body,
+    Post
 } from '@nestjs/common';
 import { PostsService } from './providers/posts.service';
 import { ApiTags } from '@nestjs/swagger';
+import { CreateUserDto } from 'src/users/dtos/create-user.dto';
+import { CreatePostDto } from './dtos/create-post.dto';
 
 
 @Controller('posts')
@@ -19,5 +23,11 @@ export class PostsController {
     @Get('/:userId?')
     public getPosts(@Param('userId') userId: string){
         return this.postsService.findAll(userId);
+    }
+
+    @Post('/create/:userId?')
+    public createPost(@Body() createPostDto: CreatePostDto){
+        console.log(createPostDto)
+        return 'Post added';
     }
 }
