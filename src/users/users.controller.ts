@@ -20,7 +20,9 @@ import { UsersService } from './providers/users.service';
 import { ApiOperation, ApiQuery, ApiResponse, ApiTags } from '@nestjs/swagger';
 
 
-
+/**
+ * Controller to handle all user related requests
+*/
 @Controller('users')
 @ApiTags('Users')
 export class UsersController {
