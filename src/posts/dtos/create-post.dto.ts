@@ -1,4 +1,4 @@
-import { IsArray, IsEnum, IsISO8601, IsJSON, IsNotEmpty, IsOptional, IsString, IsUrl, Matches, MinLength, validate, ValidateNested } from "class-validator";
+import { IsArray, IsEnum, IsISO8601, IsJSON, IsNotEmpty, IsOptional, IsString, IsUrl, Matches, maxLength, MaxLength, MinLength, validate, ValidateNested } from "class-validator";
 import { PostStatus } from "../enums/PostStatus.enum";
 import { PostType } from "../enums/postType.enum";
 import { CreatePostMetaOptionsDto } from "src/users/dtos/create-post-meta-options.dto";
@@ -10,6 +10,7 @@ export class CreatePostDto {
     @ApiProperty()
     @IsString()
     @MinLength(4)
+    @MaxLength(512)
     @IsNotEmpty()
     title: string;
      
@@ -26,6 +27,7 @@ export class CreatePostDto {
         description: 'The slug of the post. For example: "this-is-a-slug"'
     })
     @IsString()
+    @MaxLength(256)
     @IsNotEmpty()
     @Matches(/^[a-z0-9]+(?:-[a-z0-9]+)*$/,{
         message: 'A slug should be all small letters and uses only "-" and without spaces. For example: "this-is-a-slug"' 
@@ -58,6 +60,7 @@ export class CreatePostDto {
     @ApiPropertyOptional()
     @IsOptional()
     @IsUrl()
+    @MaxLength(1024)
     featuredImageUrl?: string;
     
     @ApiPropertyOptional({
