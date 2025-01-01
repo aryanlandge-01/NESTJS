@@ -6,6 +6,7 @@ import { PostsModule } from './posts/posts.module';
 import { AuthModule } from './auth/auth.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { User } from './users/user.entity';
+import { TagsModule } from './tags/tags.module';
 
 
 
@@ -28,7 +29,8 @@ import { User } from './users/user.entity';
       host:'localhost',
       database: 'nestjs-blog'
     })
-  })],
+  }),
+    TagsModule],
   controllers: [AppController],
   providers: [AppService],
 })
