@@ -66,11 +66,11 @@ export class Post {
     publishOn?: Date;
 
     
-    // Later point In the life.
+    // relationship Between tags and metaoptions.
     @Column()
-    tags?: string[];
+    tags?: string;
 
     @Column()
-    metaOptions?: CreatePostMetaOptionsDto[];
+    metaOptions?: string;
    
 }
