@@ -1,7 +1,7 @@
 import { Column, Entity, PrimaryGeneratedColumn } from "typeorm";
 import { PostType } from "./enums/postType.enum";
 import { PostStatus } from "./enums/PostStatus.enum";
-import { CreatePostMetaOptionsDto } from "src/users/dtos/create-post-meta-options.dto";
+import { CreatePostMetaOptionsDto } from "src/meta-options/dtos/create-post-meta-options.dto";
 import { targetModulesByContainer } from "@nestjs/core/router/router-module";
 
 @Entity()
