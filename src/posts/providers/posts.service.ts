@@ -23,24 +23,10 @@ export class PostsService {
 
     // method for creating a new post
     public async createPost(@Body() createPostDto: CreatePostDto){
-        // create metaoptions
-        let metaOptions = createPostDto.metaOptions ? this.metaOptionRepository.create(createPostDto.metaOptions)
-        : null;
-
-        if(metaOptions){
-            await this.metaOptionRepository.save(metaOptions)
-        }
-
-        // create Post
-
         let post = this.postRepository.create(createPostDto)
-
-        if(metaOptions){
-            post.metaOptions = metaOptions;
-        }
-
         return await this.postRepository.save(post);
     }
+
     public findAll(userId: string){
         // User.service
         const user = this.userService.findOneById(userId);
