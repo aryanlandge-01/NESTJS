@@ -27,21 +27,27 @@ export class PostsService {
         return await this.postRepository.save(post);
     }
 
-    public findAll(userId: string){
+    public async findAll(userId: string){
         // User.service
         const user = this.userService.findOneById(userId);
-    
-        return [
-            {   
-                user: user,
-                title: "Post 1",
-                content: "Content 1",
-            },
-            {   
-                user: user,
-                title: "Post 2",
-                content: "Content 2",
+        
+        let posts = await this.postRepository.find(
+            {
+               
             }
-        ]
+        );
+        return posts;
+    }
+
+    public async delete(id: number){
+        let post = await this.postRepository.findOneBy({id});
+
+        await this.postRepository.delete(id);
+
+        // delete the metaoption
+
+        await this.metaOptionRepository.delete(post.metaOptions.id);
+
+        return {deleted: true,id}
     }
 }
