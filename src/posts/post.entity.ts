@@ -67,10 +67,10 @@ export class Post {
 
     
     // relationship Between tags and metaoptions.
-    @Column()
-    tags?: string;
+    @Column("simple-array")
+    tags?: string[];
 
-    @Column()
-    metaOptions?: string;
+    @Column("json")
+    metaOptions?: CreatePostMetaOptionsDto[];
    
 }
