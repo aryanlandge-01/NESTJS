@@ -3,11 +3,12 @@ import {
     CreateDateColumn, 
     Entity, 
     PrimaryColumn, 
+    PrimaryGeneratedColumn, 
     UpdateDateColumn } from "typeorm";
 
 @Entity()
 export class MetaOption{
-    @PrimaryColumn()
+    @PrimaryGeneratedColumn()
     id: number;
     
     @Column({

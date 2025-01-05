@@ -34,8 +34,7 @@ export class PostsController {
     })
     @Post('/create/:userId?')
     public createPost(@Body() createPostDto: CreatePostDto){
-        console.log(createPostDto)
-        return 'Post added';
+        return this.postsService.createPost(createPostDto);
     }
     
     @ApiOperation({ summary: 'Update a post' })

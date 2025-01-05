@@ -84,24 +84,18 @@ export class CreatePostDto {
         type: 'array',
         required: false,
         items: {
-            type: 'object',
+            type: 'json',
             properties: {
-                key: {
-                    type: 'string',
-                    example: 'key1',
-                    description: 'The key of the meta option. For example: "key1"'
-                },
-                value: {
-                    type: 'string',
-                    example: 'value1',
-                    description: 'The value of the meta option. For example: "value1"'
+                metavalue: {
+                    type: 'json',
+                    example: '{"sidebarEnabled": true}',
+                    description: 'The metaValue is a JSON string.'
                 }
-            }
         }
+    },
     })
     @IsOptional()
-    @IsArray()
     @ValidateNested({each: true})
     @Type(() => CreatePostMetaOptionsDto)
-    metaOptions: CreatePostMetaOptionsDto;
+    metaOptions?: CreatePostMetaOptionsDto | null;
 }
