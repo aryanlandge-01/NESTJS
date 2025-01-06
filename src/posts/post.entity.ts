@@ -70,7 +70,7 @@ export class Post {
 
     
     
-    @ManyToMany(() => Tag,{
+    @ManyToMany(() => Tag,(tag) => tag.posts,{
         eager: true
     })
     @JoinTable()
