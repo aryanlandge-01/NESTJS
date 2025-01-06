@@ -5,30 +5,39 @@ import { Repository } from 'typeorm';
 import { Post } from '../post.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { MetaOption } from 'src/meta-options/meta-option.entity';
+import { TagsService } from 'src/tags/providers/tags.service';
 
 @Injectable()
 export class PostsService {
     // Injecting the UsersService intermodular dependency
     constructor(
-        
+        // Inject The user service
         private readonly userService: UsersService,
-
+        
+        // Inject the post repository
         @InjectRepository(Post)
         private readonly postRepository: Repository<Post>,
 
         @InjectRepository(MetaOption)
         public readonly metaOptionRepository: Repository<MetaOption>,
 
+        // Inject the tagsService
+        private readonly tagsService: TagsService,
     ) {}
 
     // method for creating a new post
     public async createPost(@Body() createPostDto: CreatePostDto){
         // Find author from database on authorId
         let author = await this.userService.findOneById(createPostDto.authorId);
-        
+
+        let tags = await this.tagsService.findMultipleTags(createPostDto.tags);
+
+
+        // create a post.
         let post = this.postRepository.create({
             ...createPostDto,
             author: author,
+            tags: tags
         })
         return await this.postRepository.save(post);
     }
@@ -41,6 +50,7 @@ export class PostsService {
             {
                 relations:{
                     metaOptions: true,
+                    // tags: true
                     // author: true
                 }
             }

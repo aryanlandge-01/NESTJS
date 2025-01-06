@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { CreateTagDto } from '../dtos/create-tag-dto';
-import { Repository } from 'typeorm';
+import { In, Repository } from 'typeorm';
 import { Tag } from '../tag.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 
@@ -16,5 +16,15 @@ export class TagsService {
     public async create(createTagDto: CreateTagDto){
         let tag = this.tagsRepository.create(createTagDto);
         return await this.tagsRepository.save(tag);
+    }
+
+    public async findMultipleTags(tags: number[]) {
+        let results = await this.tagsRepository.find({
+            where: {
+                id: In(tags),
+            },
+        });
+
+        return results;
     }
 }
