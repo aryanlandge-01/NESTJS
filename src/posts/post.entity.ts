@@ -1,9 +1,10 @@
-import { Column, Entity, JoinColumn, OneToOne, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity, JoinColumn, ManyToMany, ManyToOne, OneToOne, PrimaryGeneratedColumn } from "typeorm";
 import { PostType } from "./enums/postType.enum";
 import { PostStatus } from "./enums/PostStatus.enum";
 import { CreatePostMetaOptionsDto } from "src/meta-options/dtos/create-post-meta-options.dto";
 import { targetModulesByContainer } from "@nestjs/core/router/router-module";
 import { MetaOption } from "src/meta-options/meta-option.entity";
+import { User } from "src/users/user.entity";
 
 @Entity()
 export class Post {
@@ -72,11 +73,17 @@ export class Post {
     // tags?: string[];
 
     
-    @OneToOne(() => MetaOption,{
+    @OneToOne(
+        () => MetaOption,
+        (metaOptions) => metaOptions.post
+    ,{
         cascade: true,
         eager: true
     })
-    @JoinColumn()
     metaOptions?: MetaOption;
+
+    @ManyToOne(() => User,(user) => user.posts)
+    author: User;
+
    
 }
