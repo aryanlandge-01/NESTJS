@@ -1,4 +1,4 @@
-import { Inject, Injectable,forwardRef} from '@nestjs/common';
+import { BadRequestException, Inject, Injectable,RequestTimeoutException,forwardRef} from '@nestjs/common';
 import { GetUsersParamDto } from '../dtos/get-user-param.dto';
 import { AuthService } from 'src/auth/Provider/auth.service';
 import { Repository } from 'typeorm';
@@ -27,14 +27,39 @@ export class UsersService{
 
     public async createUser(createUserDto: CreateUserDto){
         // check if user already in database
-        const existingUser = await this.usersRepository.findOne({
-            where: {email: createUserDto.email},
-        })
+        let existingUser = undefined;
+        try {
+            existingUser = await this.usersRepository.findOne({
+                where: {email: createUserDto.email},
+            })
+        } catch (error) {
+            throw new RequestTimeoutException(
+                'Unable to process your request at the moment please try later.',
+                {
+                    description: 'Error connecting to the database'
+                },
+            );
+        }
+
+        if (existingUser){
+            throw new BadRequestException(
+                'The user already exists, please check your email'
+            )
+        }
 
         // create a new user
 
         let newUser = this.usersRepository.create(createUserDto);
-        newUser = await this.usersRepository.save(newUser);
+        try{
+            newUser = await this.usersRepository.save(newUser);
+        }catch(error){
+            throw new RequestTimeoutException(
+                'Unable to process your request at the moment please try later.',
+                {
+                    description: "Error Connecting to the database."
+                }
+            )
+        }
 
         return newUser;
     }
@@ -47,7 +72,7 @@ export class UsersService{
         limit: number,
         page: number 
     ) {
-        console.log(this.profileConfiguration)
+        // console.log(this.profileConfiguration)
         return  [
             { 
               name: 'John',
@@ -64,9 +89,24 @@ export class UsersService{
      * Method to get a single user by Id
     */
     public async findOneById(id: number){
-       return await this.usersRepository.findOneBy({
-        id,
-       });
+
+       let user = undefined;
+       try {
+            user =await this.usersRepository.findOneBy({
+                id,
+           });
+       } catch (error) {
+           throw new RequestTimeoutException(
+              'Unable to process your reauest at the moment please try again later.',
+              {
+                description: 'Error connecting to the database.'
+              }
+           )
+       }
+       if (!user){
+          throw new BadRequestException('user not found.')
+       }
+       return user
     }
 
 }
