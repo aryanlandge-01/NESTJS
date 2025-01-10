@@ -1,7 +1,7 @@
 import { BadRequestException, Inject, Injectable,RequestTimeoutException,forwardRef} from '@nestjs/common';
 import { GetUsersParamDto } from '../dtos/get-user-param.dto';
 import { AuthService } from 'src/auth/Provider/auth.service';
-import { Repository } from 'typeorm';
+import { DataSource, In, Repository } from 'typeorm';
 import { User } from '../user.entity';
 import { CreateUserDto } from '../dtos/create-user.dto';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -22,7 +22,10 @@ export class UsersService{
 
         // Inject module specific profile
         @Inject(profileConfig.KEY)
-        private readonly profileConfiguration: ConfigType<typeof profileConfig>
+        private readonly profileConfiguration: ConfigType<typeof profileConfig>,
+        
+
+        private readonly dataSource: DataSource,
     ){}
 
     public async createUser(createUserDto: CreateUserDto){
@@ -107,6 +110,37 @@ export class UsersService{
           throw new BadRequestException('user not found.')
        }
        return user
+    }
+
+    public async createMany(createUsersDto: CreateUserDto[]){
+        let newUsers: User[] = [];
+        // Need a query runner instance
+        const queryRunner = this.dataSource.createQueryRunner();
+
+        // connect this instance to a datasource
+        await queryRunner.connect()
+        // start transction
+        await queryRunner.startTransaction()
+
+        try {
+            for (let user of createUsersDto){
+                let newUser = queryRunner.manager.create(User,user);
+                let result = await queryRunner.manager.save(newUser);
+                newUsers.push(result);
+            }
+            // if successful commit
+            await queryRunner.commitTransaction()
+        } catch (error) {
+            // if unsucessful rollback.
+            await queryRunner.rollbackTransaction();
+        } finally{
+           // Realease a connection
+           await queryRunner.release();
+        }
+        
+
+        
+        
     }
 
 }
