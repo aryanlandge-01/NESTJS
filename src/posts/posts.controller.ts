@@ -32,7 +32,7 @@ export class PostsController {
         @Query() postQuery: GetPostsDto,
     ){
         console.log(postQuery)
-        return this.postsService.findAll(userId);
+        return this.postsService.findAll(postQuery, userId);
     }
     
     @ApiOperation({ summary: 'Create a new post' })

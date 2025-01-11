@@ -7,6 +7,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { MetaOption } from 'src/meta-options/meta-option.entity';
 import { TagsService } from 'src/tags/providers/tags.service';
 import { PatchPostDto } from '../dtos/patch-post.dto';
+import { GetPostsDto } from '../dtos/get-post.dto';
 
 @Injectable()
 export class PostsService {
@@ -43,8 +44,8 @@ export class PostsService {
         return await this.postRepository.save(post);
     }
 
-    public async findAll(userId: string){
-        // User.service
+    public async findAll(postQuery: GetPostsDto,userId: string){
+        
      
         
         let posts = await this.postRepository.find(
@@ -53,7 +54,9 @@ export class PostsService {
                     metaOptions: true,
                     // tags: true
                     // author: true
-                }
+                },
+                skip: (postQuery.page - 1) * postQuery.limit,
+                take: postQuery.limit,
             }
         );
         return posts;
