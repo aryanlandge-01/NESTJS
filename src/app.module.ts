@@ -13,6 +13,10 @@ import appConfig  from './config/app.config';
 import databaseConfig from './config/database.config';
 import environmentValidation from './config/environment.validation';
 import { PaginationModule } from './common/pagination/pagination.module';
+import jwtConfig from './auth/config/jwt.config';
+import { JwtModule } from '@nestjs/jwt';
+import { APP_GUARD } from '@nestjs/core';
+import { AccessTokenGuard } from './auth/guards/access-token/access-token.guard';
 
 const ENV = process.env.NODE_ENV;
 console.log(process.env.NODE_ENV);
@@ -34,7 +38,7 @@ console.log(process.env.NODE_ENV);
     TypeOrmModule.forRootAsync({
       imports: [ConfigModule],
       inject: [ConfigService],
-    useFactory: (configservice: ConfigService) => ({
+      useFactory: (configservice: ConfigService) => ({
       type: "postgres",
       // entities: [User],
       autoLoadEntities: configservice.get('database.autoLoadEntities'),
@@ -45,10 +49,19 @@ console.log(process.env.NODE_ENV);
       host: configservice.get<string>("database.host"),
       database: configservice.get<string>("database.name")
     })
-  }),
+    }),
     TagsModule,
-    MetaOptionsModule],
+    MetaOptionsModule,
+    ConfigModule.forFeature(jwtConfig),
+    JwtModule.registerAsync(jwtConfig.asProvider())
+  ],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [
+    AppService,
+    {
+      provide: APP_GUARD,
+      useClass: AccessTokenGuard,
+    },
+  ],
 })
 export class AppModule {}
