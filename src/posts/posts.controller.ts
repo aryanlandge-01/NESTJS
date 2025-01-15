@@ -7,7 +7,8 @@ import {
     Patch,
     Delete,
     Query,
-    ParseIntPipe
+    ParseIntPipe,
+    Req
 } from '@nestjs/common';
 import { PostsService } from './providers/posts.service';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
@@ -15,6 +16,8 @@ import { CreateUserDto } from 'src/users/dtos/create-user.dto';
 import { CreatePostDto } from './dtos/create-post.dto';
 import { PatchPostDto } from './dtos/patch-post.dto';
 import { GetPostsDto } from './dtos/get-post.dto';
+import { request } from 'http';
+import { REQUEST_USER_KEY } from 'src/auth/constants/auth.constants';
 
 
 @Controller('posts')
