@@ -12,6 +12,8 @@ import { CreateManyUsersDto } from '../dtos/create-many-users.dto';
 import { CreateUserProvider } from './create-user.provider';
 import { FindOneUserByEmailProvider } from './find-one-user-by-email.provider';
 import { FindOneGoogleIdProvider } from './find-one-google-id.provider';
+import { CreateGoogleUserProvider } from './create-google-user.provider';
+import { GoogleUser } from '../interface/google-user.interface';
 
 /**
  * Class to Connect to User Table and perform CRUD operations
@@ -46,6 +48,11 @@ export class UsersService{
          * Inject Findonegoogleprovider
          */
         private readonly findonebygoogleIdProvider: FindOneGoogleIdProvider,
+
+        /**
+         * Inject createGoogleUserProvider
+         */
+        private readonly createGoogleUserProvider: CreateGoogleUserProvider,
     ){}
 
     /**
@@ -116,5 +123,10 @@ export class UsersService{
     // Proxy method to inject the findonebygoogleid
     public async findOneByGoogleId(googleId: string){
         return await this.findonebygoogleIdProvider.findOneByGoogleId(googleId);
+    }
+
+    //proxy method to injec the creategoogleuserprovider
+    public async createGoogleUser(googleUser: GoogleUser){
+        return await this.createGoogleUserProvider.createGoogleUser(googleUser);
     }
 }

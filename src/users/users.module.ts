@@ -14,6 +14,7 @@ import jwtConfig from 'src/auth/config/jwt.config';
 import { APP_GUARD } from '@nestjs/core';
 import { AccessTokenGuard } from 'src/auth/guards/access-token/access-token.guard';
 import { FindOneGoogleIdProvider } from './providers/find-one-google-id.provider';
+import { CreateGoogleUserProvider } from './providers/create-google-user.provider';
 
 
 @Module({
@@ -22,7 +23,7 @@ import { FindOneGoogleIdProvider } from './providers/find-one-google-id.provider
     UsersService, 
     UserCreateManyProvider, 
     CreateUserProvider, 
-    FindOneUserByEmailProvider, FindOneGoogleIdProvider,
+    FindOneUserByEmailProvider, FindOneGoogleIdProvider, CreateGoogleUserProvider,
   ],
   exports: [UsersService],
   imports: [
