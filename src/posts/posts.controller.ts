@@ -18,6 +18,8 @@ import { PatchPostDto } from './dtos/patch-post.dto';
 import { GetPostsDto } from './dtos/get-post.dto';
 import { request } from 'http';
 import { REQUEST_USER_KEY } from 'src/auth/constants/auth.constants';
+import { ActiveUser } from 'src/auth/decorators/active-user-data.decorator';
+import { ActiveUserData } from 'src/auth/interfaces/active-user.interface';
 
 
 @Controller('posts')
@@ -44,8 +46,11 @@ export class PostsController {
         description: 'The record has been successfully created.'
     })
     @Post('/create/:userId?')
-    public createPost(@Body() createPostDto: CreatePostDto){
-        return this.postsService.createPost(createPostDto);
+    public createPost(
+        @Body() createPostDto: CreatePostDto,
+        @ActiveUser() user: ActiveUserData
+    ){
+        return this.postsService.createPost(createPostDto,user);
     }
     
     @ApiOperation({ summary: 'Update a post' })
