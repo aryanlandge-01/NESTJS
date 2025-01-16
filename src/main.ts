@@ -32,6 +32,8 @@ async function bootstrap() {
 
   SwaggerModule.setup('api', app, document);
 
+  app.enableCors();
+
 
   
 
