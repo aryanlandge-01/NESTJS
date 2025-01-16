@@ -43,8 +43,6 @@ export class GoogleAuthenticationService implements OnModuleInit{
             idToken: gooleTokenDto.token,
         });
 
-        console.log(loginTicket);
-
         // extract the payload from google jwt
         const {
             email,
