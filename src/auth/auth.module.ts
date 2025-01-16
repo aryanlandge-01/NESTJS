@@ -8,6 +8,7 @@ import { SignInProvider } from './Provider/sign-in.provider';
 import { ConfigModule } from '@nestjs/config';
 import jwtConfig from './config/jwt.config';
 import { JwtModule } from '@nestjs/jwt';
+import { GenerateTokensProvider } from './Provider/generate-tokens.provider';
 
 
 
@@ -19,7 +20,8 @@ import { JwtModule } from '@nestjs/jwt';
     provide: HashingProvider,
     useClass: BcryptProvider
     },
-    SignInProvider
+    SignInProvider,
+    GenerateTokensProvider
   ],
   imports: [
     forwardRef(() => UsersModule),
