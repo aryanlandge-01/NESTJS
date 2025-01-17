@@ -19,6 +19,7 @@ import { APP_GUARD, APP_INTERCEPTOR } from '@nestjs/core';
 import { AccessTokenGuard } from './auth/guards/access-token/access-token.guard';
 import { AuthenticationGuard } from './auth/guards/authentication/authentication.guard';
 import { DataResponseInterceptor } from './common/interceptors/data-response/data-response.interceptor';
+import { UploadsModule } from './uploads/uploads.module';
 
 const ENV = process.env.NODE_ENV;
 console.log(process.env.NODE_ENV);
@@ -55,7 +56,8 @@ console.log(process.env.NODE_ENV);
     TagsModule,
     MetaOptionsModule,
     ConfigModule.forFeature(jwtConfig),
-    JwtModule.registerAsync(jwtConfig.asProvider())
+    JwtModule.registerAsync(jwtConfig.asProvider()),
+    UploadsModule
   ],
   controllers: [AppController],
   providers: [
