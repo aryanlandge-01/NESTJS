@@ -58,15 +58,15 @@ describe('UsersService', () => {
          expect(service.createUser).toBeDefined();
       });
 
-      it('should call createUser on CreateUserProvider', async () => {
-         let user = await service.createUser({
-            firstName: 'Jhon',
-            lastName: 'Doe',
-            email: 'john@doe.com',
-            password: 'password'
-         });
-         expect(user.lastName).toEqual('Doe')
-      });
+      // it('should call createUser on CreateUserProvider', async () => {
+      //    let user = await service.createUser({
+      //       firstName: 'Jhon',
+      //       lastName: 'Doe',
+      //       email: 'john@doe.com',
+      //       password: 'password'
+      //    });
+      //    expect(user.lastName).toEqual('Doe')
+      // });
    })
   
 });

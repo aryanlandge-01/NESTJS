@@ -22,7 +22,7 @@ export class CreateUserProvider {
         /**
          * Inject the mailService
          */
-        private readonly mailService: MailService,
+        // private readonly mailService: MailService,
     ){}
 
     public async createUser(createUserDto: CreateUserDto){
