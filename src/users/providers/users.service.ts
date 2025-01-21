@@ -25,11 +25,11 @@ export class UsersService{
         @InjectRepository(User)
         private usersRepository: Repository<User>,
 
-        private readonly configService: ConfigService,
+        // private readonly configService: ConfigService,
 
         // Inject module specific profile
-        @Inject(profileConfig.KEY)
-        private readonly profileConfiguration: ConfigType<typeof profileConfig>,
+        // @Inject(profileConfig.KEY)
+        // private readonly profileConfiguration: ConfigType<typeof profileConfig>,
         
         /**
          * Injecting the usercreatManyProvider.
